@@ -1,53 +1,77 @@
-require_relative 'linked_list'
+require_relative 'sorting'
 
 class Stack
-  extend LinkedList
-
   def initialize
-    @first = nil
+    @data = []
+    @head = -1
   end
 
-  def push(value)
-    @first = LinkedList::Node.new(value, @first)
+  def push(a)
+    @data << a
+    @head += 1
   end
-  alias_method :"<<", :push
 
   def pop
-    raise "Stack is empty" if is_empty?
-    value = @first.value
-    @first = @first.next_node
-    value
+    result = @data[@head]
+    # @data.delete_at(@head)
+    @head -= 1
+    result
   end
 
-  def is_empty?
-    @first.nil?
+  def empty?
+    @head == -1
   end
-end
 
-
-
-# testing
-stack = Stack.new
-i = 0
-loop do
-  i += 1
-  stack << i
-  if i == 100000
-    break       # this will cause execution to exit the loop
+  def get_data
+    @data
   end
 end
 
 
-begin
-  i = 0
-  loop do
-    i += 0
-    puts stack.pop
-    if i == 100000
-      break       # this will cause execution to exit the loop
+class Extras
+  def max(data)
+    sort = Sorting::Sort.new
+    sorted = sort.merge_sort(data)
+    sorted[0]
+  end
+
+  def mean(data)
+    sum = 0
+    size = data.size
+    data.each do |item|
+      sum += item
     end
+    sum/size
   end
-rescue RuntimeError => e
-  puts "Error - #{e.message}"
 end
+
+
+# Testing with Data
+#
+# stack = Stack.new
+#
+#
+# stack.push(4)
+# stack.push(2)
+# stack.push(10)
+# stack.push(2)
+# stack.push(3)
+# stack.push(27)
+# stack.push(23)
+# stack.push(32)
+# stack.push(25)
+#
+# extras = Extras.new
+# puts extras.max(stack.get_data)
+
+
+# stack.get_data.each do
+#  puts stack.pop
+# end
+
+
+# arr = [1,2,3]
+# extra = Extras.new
+# puts extra.mean(arr)
+
 
